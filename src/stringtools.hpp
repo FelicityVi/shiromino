@@ -10,11 +10,10 @@
 #include <iterator>
 #include <algorithm>
 
-namespace stringtools
+namespace strtools
 {
-
 template<typename ... Args>
-std::string format(const std::string& formatStr, Args ... args)
+inline std::string format(const std::string& formatStr, Args ... args)
 {
     size_t size = std::snprintf(nullptr, 0, formatStr.c_str(), args ... ) + 1; // Extra space for '\0'
 
@@ -24,7 +23,7 @@ std::string format(const std::string& formatStr, Args ... args)
     return std::string{buf.get(), buf.get() + size - 1}; // We don't want the '\0' inside
 }
 
-std::vector<std::string> split(std::string& s, char delim)
+inline std::vector<std::string> split(std::string& s, char delim)
 {
     std::vector<std::string> tokens;
     std::stringstream ss {s};
@@ -37,7 +36,7 @@ std::vector<std::string> split(std::string& s, char delim)
     return tokens;
 }
 
-std::vector<std::string> words(std::string s)
+inline std::vector<std::string> words(std::string s)
 {
     std::istringstream iss (s);
 
@@ -49,6 +48,6 @@ std::vector<std::string> words(std::string s)
     return tokens;
 }
 
-} // namespace stringtools
+} // namespace strtools
 
 #endif

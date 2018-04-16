@@ -87,7 +87,7 @@ long get_cfg_option(vector<string>& lines, string label)
 
         if(str.find(label) == 0)
         {
-            vector<string> tokens = stringtools::words(str);
+            vector<string> tokens = strtools::words(str);
             if(!tokens.empty())
             {
                 return parse_long(tokens.back().c_str());
@@ -113,7 +113,7 @@ char *get_cfg_string(vector<string>& lines, string label)
 
         if(str.find(label) == 0)
         {
-            vector<string> tokens = stringtools::words(str);
+            vector<string> tokens = strtools::words(str);
             if(!tokens.empty())
             {
                 char *str = (char *)malloc(tokens.back().length() + 1);
@@ -148,23 +148,23 @@ vector<string> split_file(const char *filename)
     string buf {strbuf};
     free(strbuf);
 
-    return stringtools::split(buf, '\n');
+    return strtools::split(buf, '\n');
 }
 
 struct bindings *get_cfg_bindings(vector<string>& lines)
 {
     struct bindings *bindings = bindings_copy(&defaultkeybinds[0]);
-    string label = stringtools::format("P%dCONTROLS", 1);
+    string label = strtools::format("P%dCONTROLS", 1);
 
-    string keystrings[9] = {stringtools::format("P%dLEFT", 1),
-                            stringtools::format("P%dRIGHT", 1),
-                            stringtools::format("P%dUP", 1),
-                            stringtools::format("P%dDOWN", 1),
-                            stringtools::format("P%dA", 1),
-                            stringtools::format("P%dB", 1),
-                            stringtools::format("P%dC", 1),
-                            stringtools::format("P%dD", 1),
-                            stringtools::format("P%dESCAPE", 1)};
+    string keystrings[9] = {strtools::format("P%dLEFT", 1),
+                            strtools::format("P%dRIGHT", 1),
+                            strtools::format("P%dUP", 1),
+                            strtools::format("P%dDOWN", 1),
+                            strtools::format("P%dA", 1),
+                            strtools::format("P%dB", 1),
+                            strtools::format("P%dC", 1),
+                            strtools::format("P%dD", 1),
+                            strtools::format("P%dESCAPE", 1)};
 
     SDL_Keycode *keyptrs[9] = {
         &bindings->left, &bindings->right, &bindings->up, &bindings->down, &bindings->a, &bindings->b, &bindings->c, &bindings->d, &bindings->escape};
@@ -195,7 +195,7 @@ struct bindings *get_cfg_bindings(vector<string>& lines)
             continue;
         }
 
-        vector<string> tokens = stringtools::words(str);
+        vector<string> tokens = strtools::words(str);
 
         if(tokens.empty())
         {
@@ -234,7 +234,7 @@ int get_asset_volume(vector<string>& lines, string asset_name)
 
         if(str.find(asset_name) == 0)
         {
-            vector<string> tokens = stringtools::words(str);
+            vector<string> tokens = strtools::words(str);
             int volume = parse_long(tokens.back().c_str());
 
             if(volume == OPTION_INVALID || volume < 0 || volume > 100)
