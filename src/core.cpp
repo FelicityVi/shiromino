@@ -1,7 +1,6 @@
 #include "core.h"
 
 #include "zed_dbg.h"
-#include "bstrlib.h"
 #include "file_io.h"
 #include "gfx.h"
 #include "gfx_structures.h"
@@ -17,7 +16,6 @@
 
 #include <vector>
 #include <string>
-#include "bstr_to_std.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -131,15 +129,16 @@ struct bindings *bindings_copy(struct bindings *src)
     return b;
 }
 
-static bstring make_path(const char *base, const char *subdir, const char *name, const char *ext)
+static string make_path(const char *base, const char *subdir, const char *name, const char *ext)
 {
-    bstring path = base ? bfromcstr(base) : bfromcstr(".");
-    bconchar(path, '/');
-    bcatcstr(path, subdir);
-    bconchar(path, '/');
-    bcatcstr(path, name);
-    bcatcstr(path, ext);
-    //   printf("asset: %s\n", path->data);
+    string path = base ? string{base} : string{"."};
+    path.append("/");
+    path.append(subdir);
+    path.append("/");
+    path.append(name);
+    path.append(ext);
+
+    //printf("asset: %s\n", path.c_str());
     return path;
 }
 
@@ -316,7 +315,7 @@ void coreState_destroy(coreState *cs)
 
 static void load_image(coreState *cs, gfx_image *img, const char *filename)
 {
-    string path = bstr_to_std(make_path(cs->settings->home_path, "gfx", filename, ""));
+    string path = make_path(cs->settings->home_path, "gfx", filename, "");
     if(!img_load(img, (const char *)path.c_str(), cs))
     {
         log_warn("Failed to load image '%s'", filename);
@@ -325,7 +324,7 @@ static void load_image(coreState *cs, gfx_image *img, const char *filename)
 
 static int load_asset_volume(coreState *cs, const char *filename)
 {
-    string path = bstr_to_std(make_path(cs->settings->home_path, "audio", "volume", ".cfg"));
+    string path = make_path(cs->settings->home_path, "audio", "volume", ".cfg");
     vector<string> lines = split_file(path.c_str());
 
     return get_asset_volume(lines, string{filename});
@@ -333,7 +332,7 @@ static int load_asset_volume(coreState *cs, const char *filename)
 
 static void load_sfx(coreState *cs, struct sfx *s, const char *filename)
 {
-    string path = bstr_to_std(make_path(cs->settings->home_path, "audio", filename, ""));
+    string path = make_path(cs->settings->home_path, "audio", filename, "");
     if(!sfx_load( s, (const char *)path.c_str() ))
     {
         log_warn("Failed to load sfx '%s'", filename);
@@ -344,7 +343,7 @@ static void load_sfx(coreState *cs, struct sfx *s, const char *filename)
 
 static void load_music(coreState *cs, struct music *m, const char *filename)
 {
-    string path = bstr_to_std(make_path(cs->settings->home_path, "audio", filename, ""));
+    string path = make_path(cs->settings->home_path, "audio", filename, "");
     if(!music_load( m, (const char *)path.c_str() ))
     {
         log_warn("Failed to load music '%s'", filename);

@@ -6,6 +6,11 @@
 
 inline std::string bstr_to_std(bstring b)
 {
+    if(!b || !b->data)
+    {
+        return {};
+    }
+
     std::string s {(char *)b->data};
     bdestroy(b);
     return s;
