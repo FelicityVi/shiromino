@@ -1080,7 +1080,7 @@ int gfx_drawkeys(coreState *cs, struct keyflags *k, int x, int y, Uint32 rgba)
 int gfx_drawtext(coreState *cs, std::string text, int x, int y, png_monofont *font, struct text_formatting *fmt)
 {
     bstring b = bfromcstr(text.c_str());
-    int rc = gfx_drawtext(cs, text, x, y, font, fmt);
+    int rc = gfx_drawtext(cs, b, x, y, font, fmt);
     bdestroy(b);
     return rc;
 }
