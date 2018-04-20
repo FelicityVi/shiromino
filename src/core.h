@@ -116,6 +116,8 @@ typedef struct game game_t;
 
 struct coreState_
 {
+    coreState_() {}
+
     double fps;        // because tap fps = 61.68
 
     int text_editing;
@@ -228,6 +230,23 @@ struct game
     coreState *origin;
     grid_t *field;
     void *data;
+};
+
+class Game
+{
+public:
+    Game(coreState& cs) : cs(cs), frameCounter(0) {}
+    virtual ~Game();
+
+    virtual int init() { return 0; }
+    virtual int quit() { return 0; }
+    virtual int input() { return 0; }
+    virtual int frame() = 0;
+    virtual int draw() { return 0; }
+
+protected:
+    coreState& cs;
+    unsigned long frameCounter;
 };
 
 extern struct bindings defaultkeybinds[2];
